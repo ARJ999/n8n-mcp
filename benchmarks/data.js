@@ -1,39 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1773493704821,
+  "lastUpdate": 1773505856338,
   "repoUrl": "https://github.com/czlonkowski/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "56956555+czlonkowski@users.noreply.github.com",
-            "name": "Romuald Członkowski",
-            "username": "czlonkowski"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "cdaa29e7a2445f1e84144965a7b803be00f6b760",
-          "message": "fix: memory leak in session removal - close MCP server properly (#471) (#472)\n\n- Add close() method to N8NDocumentationMCPServer that:\n  - Calls server.close() (MCP SDK cleanup)\n  - Clears internal cache\n  - Nullifies service references to help GC\n- Update removeSession() to call server.close() before releasing references\n\nRoot cause: removeSession() deleted server from map but didn't call cleanup\nEvidence: Production server memory grew ~1GB in 43 minutes (10% to 35%)\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-authored-by: Romuald Członkowski <romualdczlonkowski@MacBook-Pro-Romuald.local>\nCo-authored-by: Claude <noreply@anthropic.com>",
-          "timestamp": "2025-12-05T18:30:51+01:00",
-          "tree_id": "2e72fdb4e4336b7c17f579b885fbdeae90c0439c",
-          "url": "https://github.com/czlonkowski/n8n-mcp/commit/cdaa29e7a2445f1e84144965a7b803be00f6b760"
-        },
-        "date": 1764955975115,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "sample - array sorting - small",
-            "value": 0.0136,
-            "range": "0.3096",
-            "unit": "ms",
-            "extra": "73341 ops/sec"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -1532,6 +1501,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/czlonkowski/n8n-mcp/commit/248f859c4927beb3d670d1c4f9e611bc588deeb8"
         },
         "date": 1773493704134,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "56956555+czlonkowski@users.noreply.github.com",
+            "name": "Romuald Członkowski",
+            "username": "czlonkowski"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9590f751d2eb83213be0ba789f0be5252f0f5364",
+          "message": "fix: resolve multiple n8n_update_partial_workflow bugs (#635)\n\n* fix: use correct MCP SDK API for server capabilities in test\n\ngetServerVersion() returns Implementation (name/version only), not the\nfull init result. Use client.getServerCapabilities() instead to access\nserver capabilities, fixing the CI typecheck failure.\n\nConcieved by Romuald Członkowski - www.aiadvisors.pl/en\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* fix: resolve multiple n8n_update_partial_workflow bugs (#592, #599, #610, #623, #624, #625, #629, #630, #633)\n\nPhase 1 - Data loss prevention:\n- Add missing unary operators (empty, notEmpty, exists, notExists) to sanitizer (#592)\n- Preserve positional empty arrays in connections during removeNode/cleanStale (#610)\n- Scope sanitization to modified nodes only, preventing unrelated node corruption\n- Add empty body {} to activate/deactivate POST calls to fix 415 errors (#633)\n\nPhase 2 - Error handling & response clarity:\n- Serialize Zod errors to readable \"path: message\" strings (#630)\n- Add saved:true/false field to all response paths (#625)\n- Improve updateNode error hint with correct structure example (#623)\n- Track removed node names for better removeConnection errors (#624)\n\nPhase 3 - Connection & type fixes:\n- Coerce sourceOutput/targetInput to String() consistently (#629)\n- Accept numeric sourceOutput/targetInput at Zod schema level via transform\n\nPhase 4 - Tag operations via dedicated API (#599):\n- Track tags as tagsToAdd/tagsToRemove instead of mutating workflow.tags\n- Orchestrate tag creation and association via listTags/createTag/updateWorkflowTags\n- Reconcile conflicting add/remove for same tag (last operation wins)\n- Tag failures produce warnings, not hard errors\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* docs: add v2.37.0 changelog entry\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* fix: resolve pre-existing integration test failures in CI\n\n- Create new MCP Server instance per connection in test helpers (SDK 1.27+\n  requires separate Protocol instance per connection)\n- Normalize database paths with path.resolve() in shared-database singleton\n  to prevent path mismatch errors across test files\n- Add no-op catch handler to deferred initialization promise in server.ts\n  to prevent unhandled rejection warnings\n- Properly call mcpServer.shutdown() in test helper close() to release\n  shared database references\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-03-14T17:27:33+01:00",
+          "tree_id": "5914b08908ca7b9d9edb34b950721e9148995740",
+          "url": "https://github.com/czlonkowski/n8n-mcp/commit/9590f751d2eb83213be0ba789f0be5252f0f5364"
+        },
+        "date": 1773505855556,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
